@@ -3,7 +3,7 @@
       <router-link to="/" class="navbar-brand active item">Image Storage</router-link>
     <ul v-if="isLoggedIn" class="nav nav-pills">
       <li class="nav-item">
-        <router-link to="/" class="nav-link">Galleries</router-link>
+        <router-link to="/galleries" class="nav-link">Galleries</router-link>
       </li>
       <li class="nav-item">
         <router-link to="/favorites" class="nav-link">Favorites</router-link>

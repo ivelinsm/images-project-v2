@@ -18,11 +18,14 @@
       :key="image.id"
       class="card mx-auto"
       style="width: 18rem"
-    > 
+    >
       <img v-lazyload :data-src="image.url" alt="image.url" />
-      <button class="btn btn-ovarlay-icon"><i class=" fa-regular fa-star fa-2x"></i></button>
+      <button class="btn btn-ovarlay-icon">
+        <i class="fa-regular fa-star fa-2x"></i>
+      </button>
+      <Dropdown/>
       <div class="card-body">
-        <h5 >{{ image.title }}</h5>
+        <h5>{{ image.title }}</h5>
       </div>
       <div class="btn-group" role="group" aria-label="Basic outlined example">
         <button
@@ -37,11 +40,11 @@
         </button>
       </div>
     </div>
-    <observer v-on:intersect="intersected"/>
+    <observer v-on:intersect="intersected" />
   </div>
-    <h3 v-else class="text-center">
-      Redirecting to Login Page in {{ countDown }} seconds...
-    </h3>
+  <h3 v-else class="text-center">
+    Redirecting to Login Page in {{ countDown }} seconds...
+  </h3>
 </template>
 
 <script>
@@ -50,6 +53,7 @@ import SingleImage from "./SingleImage.vue";
 import Modal from "./Modal.vue";
 import lazyload from "../directives/lazyload";
 import Observer from "./Observer.vue";
+import Dropdown from './Dropdown.vue';
 
 const STOCK_PHOTO =
   "https://image.shutterstock.com/image-vector/no-image-available-icon-template-600w-1036735678.jpg";
@@ -64,14 +68,18 @@ export default {
       countDown: 4,
       comments: {
         1: null,
-        2: null
-      }
+        2: null,
+      },
+      dropdownToggled: false
     };
   },
-  components: { SingleImage, Modal, Observer },
+  components: { SingleImage, Modal, Observer, Dropdown },
 
   computed: {
-    ...mapGetters(["allImages", "isLoggedIn"])
+    ...mapGetters(["allImages", "isLoggedIn"]),
+    isToggled() {
+
+    }
   },
 
   methods: {
@@ -88,6 +96,10 @@ export default {
 
     triggerModal() {
       this.modalVisible = true;
+    },
+
+    toggleDropdown() {
+      this.dropdownToggled = !this.dropdownToggled
     },
 
     publish(image) {
@@ -114,7 +126,7 @@ export default {
 
     intersected() {
       this.fetchImages();
-    }
+    },
   },
 
   directives: {
@@ -123,10 +135,10 @@ export default {
 
   watch: {
     isLoggedIn(newValue, oldValue) {
-      if(!newValue){
+      if (!newValue) {
         this.countDownTimer();
       }
-    }
+    },
   },
 
   mounted() {
@@ -141,11 +153,11 @@ export default {
   min-height: 400px;
 }
 
-.btn-ovarlay-icon{
-  position:absolute;
-    top:0px;
-    right:-8px;
-    height:30px;
-    opacity: 50%;
+.btn-ovarlay-icon {
+  position: absolute;
+  top: 0px;
+  right: -8px;
+  height: 30px;
+  opacity: 50%;
 }
 </style>

@@ -7,7 +7,9 @@ import VueRouter from 'vue-router'
 import AuthHandler from './components/AuthHandler'
 import ImageList from './components/ImageList'
 import FavoritesList from './components/FavoritesList'
+import Galleries from './components/Galleries'
 import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap"
 import { mapGetters } from 'vuex'
 
 const isAuth = store.getters['isLoggedIn']
@@ -19,6 +21,7 @@ export const router = new VueRouter({
   routes: [
     { path: '/', component: ImageList },
     { path: '/oauth2/callback', component: AuthHandler },
+    { path: '/galleries', component: Galleries },
     { path: '/favorites', component: FavoritesList, beforeEnter: (to, from, next) => {
       if(!this.isLoggedIn){
         next(false)

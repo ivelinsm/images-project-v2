@@ -27,7 +27,7 @@ const mutations = {
 };
 
 const actions = {
-    async fetchImages({  commit, rootState }) {
+    async fetchImages({  commit }) {
         const response = await api.fetchImages(state.page);
         commit('incrementPage');
         const combinedImages = [...state.images, ...response.data]
