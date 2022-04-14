@@ -17,6 +17,7 @@
 
     <ul class="list-group">
       <li
+        @click="selectGallery(name)"
         v-for="(value, name, index) in getAllGalleries"
         :key="index"
         class="
@@ -37,6 +38,7 @@
         ></button>
       </li>
     </ul>
+    <GalleryShowCase :gallery="selectedGalleryImages(selectedGallery)" :galleryName="selectedGallery" />
   </div>
 </template>
 
@@ -45,6 +47,7 @@ import { mapActions, mapGetters } from "vuex";
 import ModalForm from "./Helpers/ModalForm.vue";
 import ModalConfirmation from "./Helpers/ModalConfirmation.vue";
 import Alert from "./Helpers/Alert.vue";
+import GalleryShowCase from "./GalleryShowCase.vue"
 
 export default {
   name: "Galleries",
@@ -57,6 +60,8 @@ export default {
         body: "",
         type: "danger",
       },
+
+      selectedGallery: 'favorites'
     };
   },
 
@@ -64,14 +69,16 @@ export default {
     ModalForm,
     Alert,
     ModalConfirmation,
+    GalleryShowCase
   },
 
   computed: {
-    ...mapGetters(["getAllGalleries", "getGallery"]),
+    ...mapGetters(["getAllGalleries", "getGallery", "allImages"]),
     galleryNames() {
       let names = Object.keys(this.getAllGalleries);
       return names;
-    },
+    }
+    
   },
 
   methods: {
@@ -109,9 +116,26 @@ export default {
         };
         return;
       }
-      
+
       deleteGallery(name);
     },
+
+    selectGallery(galleryName) {
+      this.selectedGallery = galleryName
+    },
+
+    selectedGalleryImages(galleryName) {
+      console.log(this.allImages.filter(image => {
+        if(this.getGallery(galleryName).includes(image.id)){
+          return image
+        }
+      }))
+      return this.allImages.filter(image => {
+        if(this.getGallery(galleryName).includes(image.id)){
+          return image
+        }
+      });
+    }
   },
 };
 </script>
