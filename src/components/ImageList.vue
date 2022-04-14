@@ -19,11 +19,12 @@
       class="card mx-auto"
       style="width: 18rem"
     >
-      <img v-lazyload :data-src="image.url" alt="image.url" />
-      <button class="btn btn-ovarlay-icon">
-        <i class="fa-regular fa-star fa-2x"></i>
-      </button>
-      <Dropdown/>
+        <img v-lazyload :data-src="image.url" alt="image.url" />
+        <button class="btn btn-ovarlay-icon">
+          <i class="fa-regular fa-star fa-2x"></i>
+        </button>
+        <Dropdown :imageId="image.id"/>
+
       <div class="card-body">
         <h5>{{ image.title }}</h5>
       </div>
@@ -53,10 +54,7 @@ import SingleImage from "./SingleImage.vue";
 import Modal from "./Modal.vue";
 import lazyload from "../directives/lazyload";
 import Observer from "./Observer.vue";
-import Dropdown from './Dropdown.vue';
-
-const STOCK_PHOTO =
-  "https://image.shutterstock.com/image-vector/no-image-available-icon-template-600w-1036735678.jpg";
+import Dropdown from "./Dropdown.vue";
 
 export default {
   name: "ImageList",
@@ -70,16 +68,14 @@ export default {
         1: null,
         2: null,
       },
-      dropdownToggled: false
+      dropdownToggled: false,
     };
   },
   components: { SingleImage, Modal, Observer, Dropdown },
 
   computed: {
     ...mapGetters(["allImages", "isLoggedIn"]),
-    isToggled() {
-
-    }
+    isToggled() {},
   },
 
   methods: {
@@ -99,7 +95,7 @@ export default {
     },
 
     toggleDropdown() {
-      this.dropdownToggled = !this.dropdownToggled
+      this.dropdownToggled = !this.dropdownToggled;
     },
 
     publish(image) {

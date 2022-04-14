@@ -8,7 +8,7 @@
       aria-expanded="false"
       @click="onToggle"
     >
-      Small button
+      Choose Gallery:
     </button>
     <div
       :class="[toggle ? 'show' : '', 'dropdown-menu']"
@@ -20,18 +20,36 @@
         left: 0px;
         will-change: transform;
       "
-      :id="2+2"
     >
-      <a class="dropdown-item" href="#">Cats</a>
-      <a class="dropdown-item" href="#">Funny photos</a>
-      <a class="dropdown-item" href="#">Something else</a>
+      <a
+        v-for="(value, name, index) in getAllGalleries"
+        :key="index"
+        class="dropdown-item"
+        @click="addToGalleryHandler(name, imageId)"
+        >{{name}}</a
+      >
     </div>
   </div>
 </template>
 
 <script>
+import { Fragment } from "vue-frag";
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: "Dropdown",
+
+  props: {
+    imageId: Number
+  },
+
+  components: {
+    Fragment,
+  },
+
+  computed: {
+    ...mapGetters(["getAllGalleries", "getGallery"]),
+  },
 
   data() {
     return {
@@ -40,14 +58,27 @@ export default {
   },
 
   methods: {
-      onToggle() {
-          this.toggle = !this.toggle
+    ...mapActions(["addToGallery"]),
+
+    onToggle() {
+      this.toggle = !this.toggle;
+    },
+
+    addToGalleryHandler( galleryName, imageId) {
+      console.log(this.getGallery(galleryName))
+      if (this.getGallery(galleryName).includes(imageId)) {
+        
+        return
       }
+      const payload = {"galleryName": galleryName, "imageId": imageId}
+      this.addToGallery({galleryName, imageId});
+      console.log('Image added to gallery ' + imageId)
+    }
   },
 };
 </script>
 
-<style>
+<style scoped>
 .my-dropdown {
   position: absolute;
   bottom: 160px;

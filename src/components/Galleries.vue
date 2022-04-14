@@ -1,43 +1,127 @@
 <template>
-  <div class="modal-open">
-    <h1>Galleries</h1>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Open modal for @mdo</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Recipient:</label>
-            <input type="text" class="form-control" id="recipient-name">
-          </div>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Message:</label>
-            <textarea class="form-control" id="message-text"></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Send message</button>
-      </div>
+  <div>
+    <div class="d-flex justify-content-between">
+      <h1>Galleries</h1>
+      <ModalForm @create="createGalleryHandler" />
     </div>
-  </div>
-</div>
+    <Alert
+      @close="alert.show = !alert.show"
+      :type="alert.type"
+      :show="alert.show"
+    >
+      <template v-slot:strong>{{ alert.title }}</template>
+      <template v-slot:body>
+        {{ alert.body }}
+      </template>
+    </Alert>
+
+    <ul class="list-group">
+      <li
+        v-for="(value, name, index) in getAllGalleries"
+        :key="index"
+        class="
+          list-group-item
+          d-flex
+          justify-content-between
+          align-items-center
+        "
+      >
+        <span class="flex-grow-1">{{ name }}</span>
+        <span class="badge bg-secondary badge-primary badge-pill">{{
+          value.length
+        }}</span>
+        <button
+          @click="deleteGalleryHandler(name)"
+          type="button"
+          class="btn-close"
+        ></button>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+import ModalForm from "./Helpers/ModalForm.vue";
+import ModalConfirmation from "./Helpers/ModalConfirmation.vue";
+import Alert from "./Helpers/Alert.vue";
+
 export default {
   name: "Galleries",
+
+  data() {
+    return {
+      alert: {
+        show: false,
+        title: "",
+        body: "",
+        type: "danger",
+      },
+    };
+  },
+
+  components: {
+    ModalForm,
+    Alert,
+    ModalConfirmation,
+  },
+
+  computed: {
+    ...mapGetters(["getAllGalleries", "getGallery"]),
+    galleryNames() {
+      let names = Object.keys(this.getAllGalleries);
+      return names;
+    },
+  },
+
+  methods: {
+    ...mapActions(["createGallery", "deleteGallery"]),
+
+    createGalleryHandler(enteredName) {
+      console.log(this.getAllGalleries.hasOwnProperty(enteredName));
+
+      if (this.getAllGalleries.hasOwnProperty(enteredName)) {
+        this.alert = {
+          show: true,
+          title: "Error!",
+          body: "You have already created a gallery with that name.",
+          type: "danger",
+        };
+        return;
+      }
+      this.createGallery(enteredName);
+
+      this.alert = {
+        show: true,
+        title: "Success!",
+        body: `You created a gallery with the name "${enteredName}"`,
+        type: "success",
+      };
+    },
+
+    deleteGalleryHandler(name) {
+      if (name === "favorites") {
+        this.alert = {
+          show: true,
+          title: "Error!",
+          body: "You cannot delete that gallery",
+          type: "danger",
+        };
+        return;
+      }
+      
+      deleteGallery(name);
+    },
+  },
 };
 </script>
 
-<style>
+<style scoped>
+.list-group {
+  margin-top: 16px;
+}
+
+.badge {
+  margin-right: 8px;
+}
 </style>

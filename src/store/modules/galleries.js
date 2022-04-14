@@ -19,7 +19,7 @@ const getters = {
 };
 
 const mutations = {
-    addToGallery: (state, galleryName, imageId) => {
+    addToGallery: (state, {galleryName, imageId}) => {
         if(state.galleries.hasOwnProperty(galleryName)){
             state.galleries[galleryName].push(imageId);
         }
@@ -29,16 +29,29 @@ const mutations = {
         if(!state.galleries.hasOwnProperty(galleryName)){
             state.galleries[galleryName] = [];
         }
+    },
+
+    deleteGallery: (state, galleryName) => {
+        if(state.galleries.hasOwnProperty(galleryName)){
+            delete state.galleries[galleryName];
+        }
     }
 };
 
 const actions = {
-    addToGallery: ({ commit }, galleryName, imageId) => {
-        commit('addToGallery', galleryName, imageId);
+    addToGallery: ({ commit }, {galleryName, imageId}) => {
+        
+        console.log(imageId)
+        commit('addToGallery', {galleryName, imageId});
     },
 
     createGallery: ({ commit }, galleryName) => {
         commit('createGallery', galleryName);
+    },
+
+    deleteGallery: ({ commit }, galleryName) => {
+        commit('deleteGallery', galleryName);
+        console.log("Deleted: " + galleryName)
     }
 };
 
