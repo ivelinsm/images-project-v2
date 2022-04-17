@@ -12,8 +12,6 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 import { mapGetters } from 'vuex'
 
-const isAuth = store.getters['isLoggedIn']
-
 Vue.use(VueRouter)
 
 export const router = new VueRouter({

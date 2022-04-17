@@ -19,7 +19,7 @@ export default {
     },
 
     fetchComments(postId) {
-        return axios.get(`${ROOT_URL}/comments?postId${postId}`);
+        return axios.get(`${ROOT_URL}/comments?postId=${postId}`);
     },
 
     deleteImage(token, deleteHash) {

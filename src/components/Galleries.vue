@@ -5,7 +5,7 @@
       <ModalForm @create="createGalleryHandler" />
     </div>
     <Alert
-      @close="alert.show = !alert.show"
+      @close="alert.show = false"
       :type="alert.type"
       :show="alert.show"
     >
@@ -117,7 +117,14 @@ export default {
         return;
       }
 
-      deleteGallery(name);
+      this.deleteGallery(name);
+
+      this.alert = {
+          show: true,
+          title: "Deleted Succesfully!",
+          body: `You deleted "${name}"`,
+          type: "warning",
+        };
     },
 
     selectGallery(galleryName) {
@@ -143,6 +150,7 @@ export default {
 <style scoped>
 .list-group {
   margin-top: 16px;
+  cursor: pointer;
 }
 
 .badge {

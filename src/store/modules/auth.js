@@ -17,7 +17,9 @@ const mutations = {
 };
 
 const actions = {
-    login: () => {
+    login: ({ commit }) => {
+        commit('setToken', "123123123ss");
+        return
         api.login();
     },
 

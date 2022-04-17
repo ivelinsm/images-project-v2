@@ -81,9 +81,8 @@ export default {
 <style scoped>
 .my-dropdown {
   position: absolute;
-  bottom: 160px;
-  right: 10px;
-  height: 30px;
+  top: 10px;
+  left: 10px;
   opacity: 50%;
 }
 

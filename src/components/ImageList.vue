@@ -19,27 +19,16 @@
       class="card mx-auto"
       style="width: 18rem"
     >
-        <img v-lazyload :data-src="image.url" alt="image.url" />
-        <button class="btn btn-ovarlay-icon">
-          <i class="fa-regular fa-star fa-2x"></i>
-        </button>
-        <Dropdown :imageId="image.id"/>
+      <img v-lazyload :data-src="image.url" alt="image.url" />
+      <button class="btn btn-ovarlay-icon">
+        <i class="fa-regular fa-star fa-2x"></i>
+      </button>
+      <Dropdown :imageId="image.id" />
 
       <div class="card-body">
         <h5>{{ image.title }}</h5>
       </div>
-      <div class="btn-group" role="group" aria-label="Basic outlined example">
-        <button
-          @click="showComments(image.id)"
-          type="button"
-          class="btn btn-outline-secondary"
-        >
-          Show Comments
-        </button>
-        <button type="button" class="btn btn-outline-primary">
-          Add to Favorites
-        </button>
-      </div>
+      <ImageComments :imageId="image.id"/>
     </div>
     <observer v-on:intersect="intersected" />
   </div>
@@ -55,6 +44,7 @@ import Modal from "./Modal.vue";
 import lazyload from "../directives/lazyload";
 import Observer from "./Observer.vue";
 import Dropdown from "./Dropdown.vue";
+import ImageComments from "./ImageComments.vue"
 
 export default {
   name: "ImageList",
@@ -64,14 +54,10 @@ export default {
       modalVisible: false,
       deleteHash: "",
       countDown: 4,
-      comments: {
-        1: null,
-        2: null,
-      },
       dropdownToggled: false,
     };
   },
-  components: { SingleImage, Modal, Observer, Dropdown },
+  components: { SingleImage, Modal, Observer, Dropdown, ImageComments },
 
   computed: {
     ...mapGetters(["allImages", "isLoggedIn"]),
@@ -101,10 +87,6 @@ export default {
     publish(image) {
       console.log(image);
       this.addToGallery(image);
-    },
-
-    showComments(postId) {
-      console.log(postId);
     },
 
     countDownTimer() {
